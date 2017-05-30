@@ -2,7 +2,7 @@
         "compilerOptions": {
             "module": "system",
             "noImplicitAny": true,
-            "outFile": "app.js",
+            "outFile": "main.js",
             "removeComments": true,
             "preserveConstEnums": true,
             "sourceMap": false
