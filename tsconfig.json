@@ -1,5 +1,15 @@
-{
-    "files":[
-        "app.ts"
-    ]
-}
+    {
+        "compilerOptions": {
+            "module": "system",
+            "noImplicitAny": true,
+            "outFile": "app.js",
+            "removeComments": true,
+            "preserveConstEnums": true,
+            "sourceMap": false
+        },
+
+        "include" : [
+            "src/*"
+        ]
+
+    }
