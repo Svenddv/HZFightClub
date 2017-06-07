@@ -13,7 +13,7 @@ class Ryu{
     public Init = (): void => {
         this.Reset();
         this.idleSprite = new AnimatedSprite(this.pos, 230, 8, atlas, "ryustand");
-        this.sweepingSprite = new AnimatedSprite(this.pos, this.pos, 13, atlas, "ryusweep");
+        this.sweepingSprite = new AnimatedSprite(this.pos, 242, 13, atlas, "ryusweep");
         //this.blockingSprite = new AnimatedSprite(
         //this.deadSprite = new AnimatedSprite(
     }
@@ -45,6 +45,7 @@ class Ryu{
     public Update = (): void => {
         this.UpdateHitbox();
         this.UpdateSprites();
+        this.CheckAnimation();
     }
 
     public WalkLeft = (): void => {
@@ -54,7 +55,14 @@ class Ryu{
     public WalkRight = (): void => {
         this.pos += 2;
     }
-
+    
+    public CheckAnimation = (): void => {
+        if (this.sweepingSprite.isCompleted){
+       this.isSweeping = false;
+       this.sweepingSprite.isCompleted = false;
+        }
+    
+    }
 public UpdateSprites = (): void => {
         this.idleSprite.x = this.pos;
         this.sweepingSprite.x = this.pos;

@@ -4,7 +4,9 @@ class AnimatedSprite {
     public frameCount: number = 0;
     public atlas: TextureAtlas;
     public sequenceName: string = "";
-
+    public isCompleted: boolean = false;
+    
+    public delayFrame = 0;
     public currentFrame = 0;
 
     constructor(x: number, y: number, frame_count: number, atlas: TextureAtlas, sequence_name: string) {
@@ -18,9 +20,16 @@ class AnimatedSprite {
     public draw = (): void => {
         if (this.currentFrame > this.frameCount) {
             this.currentFrame = 0;
+            this.isCompleted = true;
         }
-        this.currentFrame++;
-
+        if (this.delayFrame <= 5) {
+            this.delayFrame++;
+            }
+        else {
+            this.currentFrame++;
+            this.delayFrame = 0;
+            }
+    
         ctx.save();
         ctx.translate(this.x, this.y);
         let key = this.getFrameString();

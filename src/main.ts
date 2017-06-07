@@ -11,7 +11,7 @@ var sprite2: AnimatedSprite;
 function gameLoop(): void {
     requestAnimationFrame(gameLoop);
     keyInput.inputLoop();
-    ctx.drawImage(background,250,250);
+    ctx.drawImage(background,250,100);
     ryu.Update();
     ryu.Draw();
     sprite2.draw();

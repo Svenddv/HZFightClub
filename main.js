@@ -5,12 +5,21 @@ var AnimatedSprite = (function () {
         this.y = 0;
         this.frameCount = 0;
         this.sequenceName = "";
+        this.isCompleted = false;
+        this.delayFrame = 0;
         this.currentFrame = 0;
         this.draw = function () {
             if (_this.currentFrame > _this.frameCount) {
                 _this.currentFrame = 0;
+                _this.isCompleted = true;
             }
-            _this.currentFrame++;
+            if (_this.delayFrame <= 5) {
+                _this.delayFrame++;
+            }
+            else {
+                _this.currentFrame++;
+                _this.delayFrame = 0;
+            }
             ctx.save();
             ctx.translate(_this.x, _this.y);
             var key = _this.getFrameString();
@@ -99,7 +108,7 @@ var sprite2;
 function gameLoop() {
     requestAnimationFrame(gameLoop);
     keyInput.inputLoop();
-    ctx.drawImage(background, 250, 250);
+    ctx.drawImage(background, 250, 100);
     ryu.Update();
     ryu.Draw();
     sprite2.draw();
@@ -136,7 +145,7 @@ var Ryu = (function () {
         this.Init = function () {
             _this.Reset();
             _this.idleSprite = new AnimatedSprite(_this.pos, 230, 8, atlas, "ryustand");
-            _this.sweepingSprite = new AnimatedSprite(_this.pos, _this.pos, 13, atlas, "ryusweep");
+            _this.sweepingSprite = new AnimatedSprite(_this.pos, 242, 13, atlas, "ryusweep");
         };
         this.Reset = function () {
             _this.pos = 315;
@@ -161,12 +170,19 @@ var Ryu = (function () {
         this.Update = function () {
             _this.UpdateHitbox();
             _this.UpdateSprites();
+            _this.CheckAnimation();
         };
         this.WalkLeft = function () {
             _this.pos -= 2;
         };
         this.WalkRight = function () {
             _this.pos += 2;
+        };
+        this.CheckAnimation = function () {
+            if (_this.sweepingSprite.isCompleted) {
+                _this.isSweeping = false;
+                _this.sweepingSprite.isCompleted = false;
+            }
         };
         this.UpdateSprites = function () {
             _this.idleSprite.x = _this.pos;
