@@ -12,7 +12,7 @@ class Ryu{
 
     public Init = (): void => {
         this.Reset();
-        this.idleSprite = new AnimatedSprite(this.pos, 230, 8, atlas, "ryustand");
+        this.idleSprite = new AnimatedSprite(this.pos, 230, 17, atlas, "ryustand");
         this.sweepingSprite = new AnimatedSprite(this.pos, 242, 13, atlas, "ryusweep");
         //this.blockingSprite = new AnimatedSprite(
         //this.deadSprite = new AnimatedSprite(

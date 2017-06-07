@@ -13,13 +13,7 @@ var AnimatedSprite = (function () {
                 _this.currentFrame = 0;
                 _this.isCompleted = true;
             }
-            if (_this.delayFrame <= 5) {
-                _this.delayFrame++;
-            }
-            else {
-                _this.currentFrame++;
-                _this.delayFrame = 0;
-            }
+            _this.currentFrame++;
             ctx.save();
             ctx.translate(_this.x, _this.y);
             var key = _this.getFrameString();
@@ -144,7 +138,7 @@ var Ryu = (function () {
         this.isDead = false;
         this.Init = function () {
             _this.Reset();
-            _this.idleSprite = new AnimatedSprite(_this.pos, 230, 8, atlas, "ryustand");
+            _this.idleSprite = new AnimatedSprite(_this.pos, 230, 17, atlas, "ryustand");
             _this.sweepingSprite = new AnimatedSprite(_this.pos, 242, 13, atlas, "ryusweep");
         };
         this.Reset = function () {

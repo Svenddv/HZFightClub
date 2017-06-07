@@ -22,13 +22,13 @@ class AnimatedSprite {
             this.currentFrame = 0;
             this.isCompleted = true;
         }
-        if (this.delayFrame <= 5) {
-            this.delayFrame++;
-            }
-        else {
-            this.currentFrame++;
-            this.delayFrame = 0;
-            }
+        // if (this.delayFrame <= 1) {
+        //     this.delayFrame++;            
+        //     }
+        // else {
+        //     this.currentFrame++;
+        //     this.delayFrame = 0;
+        this.currentFrame++;    
     
         ctx.save();
         ctx.translate(this.x, this.y);
