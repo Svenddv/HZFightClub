@@ -17,19 +17,24 @@ function gameLoop(): void {
 }
 
 function walkLeft(): void {
-    sprite.x -= 2;
+    if (sprite.x -2 >= 300) { 
+        sprite.x -= 2;}
 }
 
 function walkRight(): void {
-    sprite.x += 2;
+    if (sprite.x + 2 <= sprite2.x) {
+         sprite.x += 2; }
+
 }
 
 function walkLeftKen(): void {
-    sprite2.x -= 2;
+    if (sprite2.x -2 >= sprite.x) {
+        sprite2.x -= 2;}
 }
 
 function walkRightKen(): void {
-    sprite2.x += 2;
+    if (sprite2.x +2 <= 910) {
+        sprite2.x += 2;}
 }
 
 window.onload = () => {

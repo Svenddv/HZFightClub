@@ -104,16 +104,24 @@ function gameLoop() {
     sprite2.draw();
 }
 function walkLeft() {
-    sprite.x -= 2;
+    if (sprite.x - 2 >= 300) {
+        sprite.x -= 2;
+    }
 }
 function walkRight() {
-    sprite.x += 2;
+    if (sprite.x + 2 <= sprite2.x) {
+        sprite.x += 2;
+    }
 }
 function walkLeftKen() {
-    sprite2.x -= 2;
+    if (sprite2.x - 2 >= sprite.x) {
+        sprite2.x -= 2;
+    }
 }
 function walkRightKen() {
-    sprite2.x += 2;
+    if (sprite2.x + 2 <= 910) {
+        sprite2.x += 2;
+    }
 }
 window.onload = function () {
     canvas = document.getElementById('cnvs');
