@@ -56,6 +56,82 @@ var Frame = (function () {
     };
     return Frame;
 }());
+var Ken = (function () {
+    function Ken() {
+        var _this = this;
+        this.pos = 0;
+        this.hitboxWidth = 0;
+        this.hitboxPos = 0;
+        this.isSweeping = false;
+        this.isBlocking = false;
+        this.isDead = false;
+        this.Init = function () {
+            _this.Reset();
+            _this.idleSprite = new AnimatedSprite(_this.pos, 230, 17, atlas, "kenstand");
+            _this.sweepingSprite = new AnimatedSprite(_this.pos, 242, 27, atlas, "kensweep");
+        };
+        this.Reset = function () {
+            _this.pos = 895;
+            _this.hitboxWidth = 20;
+            _this.hitboxPos = _this.pos - _this.hitboxWidth;
+            _this.isSweeping = false;
+            _this.isBlocking = false;
+            _this.isDead = false;
+        };
+        this.Draw = function () {
+            if (_this.isSweeping) {
+                _this.sweepingSprite.draw();
+            }
+            else if (_this.isBlocking) {
+            }
+            else if (_this.isDead) {
+            }
+            else {
+                _this.idleSprite.draw();
+            }
+        };
+        this.Update = function () {
+            _this.UpdateHitbox();
+            _this.UpdateSprites();
+            _this.CheckAnimation();
+        };
+        this.WalkLeft = function () {
+            _this.pos -= 2;
+        };
+        this.WalkRight = function () {
+            _this.pos += 2;
+        };
+        this.CheckAnimation = function () {
+            if (_this.sweepingSprite.isCompleted) {
+                _this.isSweeping = false;
+                _this.sweepingSprite.isCompleted = false;
+            }
+        };
+        this.UpdateSprites = function () {
+            _this.idleSprite.x = _this.pos;
+            _this.sweepingSprite.x = _this.pos;
+        };
+        this.UpdateHitbox = function () {
+            if (_this.isSweeping) {
+                _this.hitboxWidth = 120;
+            }
+            else {
+                _this.hitboxWidth = 20;
+            }
+            _this.hitboxPos = _this.pos - _this.hitboxWidth;
+        };
+        this.Sweep = function () {
+            _this.isSweeping = true;
+        };
+        this.Block = function () {
+            _this.isBlocking = true;
+        };
+        this.Die = function () {
+            _this.isDead = true;
+        };
+    }
+    return Ken;
+}());
 var KeyboardInput = (function () {
     function KeyboardInput() {
         var _this = this;
@@ -98,20 +174,16 @@ var img = new Image();
 var keyInput;
 var atlas;
 var ryu;
+var ken;
 var sprite2;
 function gameLoop() {
     requestAnimationFrame(gameLoop);
     keyInput.inputLoop();
     ctx.drawImage(background, 250, 100);
     ryu.Update();
+    ken.Update();
     ryu.Draw();
-    sprite2.draw();
-}
-function walkLeftKen() {
-    sprite2.x -= 2;
-}
-function walkRightKen() {
-    sprite2.x += 2;
+    ken.Draw();
 }
 window.onload = function () {
     canvas = document.getElementById('cnvs');
@@ -119,10 +191,12 @@ window.onload = function () {
     keyInput = new KeyboardInput();
     atlas = new TextureAtlas("images/atlas.png", gameLoop);
     ryu = new Ryu();
+    ken = new Ken();
     ryu.Init();
-    sprite2 = new AnimatedSprite(895, 230, 8, atlas, "kenstand");
-    keyInput.addKeycodeCallback(37, walkLeftKen);
-    keyInput.addKeycodeCallback(39, walkRightKen);
+    ken.Init();
+    keyInput.addKeycodeCallback(37, ken.WalkLeft);
+    keyInput.addKeycodeCallback(39, ken.WalkRight);
+    keyInput.addKeycodeCallback(96, ken.Sweep);
     keyInput.addKeycodeCallback(65, ryu.WalkLeft);
     keyInput.addKeycodeCallback(68, ryu.WalkRight);
     keyInput.addKeycodeCallback(71, ryu.Sweep);
@@ -139,7 +213,7 @@ var Ryu = (function () {
         this.Init = function () {
             _this.Reset();
             _this.idleSprite = new AnimatedSprite(_this.pos, 230, 17, atlas, "ryustand");
-            _this.sweepingSprite = new AnimatedSprite(_this.pos, 242, 13, atlas, "ryusweep");
+            _this.sweepingSprite = new AnimatedSprite(_this.pos, 242, 27, atlas, "ryusweep");
         };
         this.Reset = function () {
             _this.pos = 315;

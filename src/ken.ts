@@ -1,4 +1,4 @@
-class Ryu{
+class Ken{
     public pos: number = 0;
     public hitboxWidth: number = 0;
     public hitboxPos: number = 0;
@@ -12,16 +12,16 @@ class Ryu{
 
     public Init = (): void => {
         this.Reset();
-        this.idleSprite = new AnimatedSprite(this.pos, 230, 17, atlas, "ryustand");
-        this.sweepingSprite = new AnimatedSprite(this.pos, 242, 27, atlas, "ryusweep");
+        this.idleSprite = new AnimatedSprite(this.pos, 230, 17, atlas, "kenstand");
+        this.sweepingSprite = new AnimatedSprite(this.pos, 242, 27, atlas, "kensweep");
         //this.blockingSprite = new AnimatedSprite(
         //this.deadSprite = new AnimatedSprite(
     }
 
     public Reset = (): void => {
-        this.pos = 315;
+        this.pos = 895;
         this.hitboxWidth = 20;
-        this.hitboxPos = this.pos + this.hitboxWidth;
+        this.hitboxPos = this.pos - this.hitboxWidth;
         this.isSweeping = false;
         this.isBlocking = false;
         this.isDead = false;
@@ -41,8 +41,7 @@ class Ryu{
             this.idleSprite.draw();
         }
     }
-
-    public Update = (): void => {
+public Update = (): void => {
         this.UpdateHitbox();
         this.UpdateSprites();
         this.CheckAnimation();
@@ -55,13 +54,13 @@ class Ryu{
     public WalkRight = (): void => {
         this.pos += 2;
     }
-    
+
     public CheckAnimation = (): void => {
         if (this.sweepingSprite.isCompleted){
        this.isSweeping = false;
        this.sweepingSprite.isCompleted = false;
         }
-    
+
     }
 public UpdateSprites = (): void => {
         this.idleSprite.x = this.pos;
@@ -77,7 +76,7 @@ public UpdateSprites = (): void => {
         else{
             this.hitboxWidth = 20;
         }
-        this.hitboxPos = this.pos + this.hitboxWidth;
+        this.hitboxPos = this.pos - this.hitboxWidth;
     }
 
     public Sweep = (): void => {
