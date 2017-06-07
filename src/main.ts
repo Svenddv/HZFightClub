@@ -5,24 +5,26 @@ background.src = "./assets/images/background.gif";
 var img: HTMLImageElement = new Image();
 var keyInput: KeyboardInput;
 var atlas: TextureAtlas;
-var sprite: AnimatedSprite;
+var ryu: Ryu;
 var sprite2: AnimatedSprite;
 
 function gameLoop(): void {
     requestAnimationFrame(gameLoop);
     keyInput.inputLoop();
-    ctx.drawImage(background,250,100);
-    sprite.draw();
+    ctx.drawImage(background,250,250);
+    ryu.Update();
+    ryu.Draw();
     sprite2.draw();
+    
 }
 
-function walkLeft(): void {
-    sprite.x -= 2;
-}
+// function walkLeft(): void {
+//     ryu.pos -= 2;
+// }
 
-function walkRight(): void {
-    sprite.x += 2;
-}
+// function walkRight(): void {
+//     ryu.pos += 2;
+// }
 
 function walkLeftKen(): void {
     sprite2.x -= 2;
@@ -37,7 +39,8 @@ window.onload = () => {
     ctx = canvas.getContext("2d");
     keyInput = new KeyboardInput();
     atlas = new TextureAtlas("images/atlas.png", gameLoop);
-    sprite = new AnimatedSprite(315, 230, 8, atlas, "ryustand");
+    ryu = new Ryu();
+    ryu.Init();
     sprite2 = new AnimatedSprite(895, 230, 8, atlas, "kenstand");
    
     // PRESS LEFT ARROW KEY
@@ -47,9 +50,12 @@ window.onload = () => {
     keyInput.addKeycodeCallback(39, walkRightKen);
     
     // PRESS 'A' KEY
-    keyInput.addKeycodeCallback(65, walkLeft);
+    keyInput.addKeycodeCallback(65, ryu.WalkLeft);
    
     // PRESS 'D' KEY
-    keyInput.addKeycodeCallback(68, walkRight);
+    keyInput.addKeycodeCallback(68, ryu.WalkRight);
+
+    // PRESS 'G' KEY
+    keyInput.addKeycodeCallback(71, ryu.Sweep);
     
 };

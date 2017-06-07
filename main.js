@@ -94,20 +94,15 @@ background.src = "./assets/images/background.gif";
 var img = new Image();
 var keyInput;
 var atlas;
-var sprite;
+var ryu;
 var sprite2;
 function gameLoop() {
     requestAnimationFrame(gameLoop);
     keyInput.inputLoop();
-    ctx.drawImage(background, 250, 100);
-    sprite.draw();
+    ctx.drawImage(background, 250, 250);
+    ryu.Update();
+    ryu.Draw();
     sprite2.draw();
-}
-function walkLeft() {
-    sprite.x -= 2;
-}
-function walkRight() {
-    sprite.x += 2;
 }
 function walkLeftKen() {
     sprite2.x -= 2;
@@ -120,13 +115,84 @@ window.onload = function () {
     ctx = canvas.getContext("2d");
     keyInput = new KeyboardInput();
     atlas = new TextureAtlas("images/atlas.png", gameLoop);
-    sprite = new AnimatedSprite(315, 230, 8, atlas, "ryustand");
+    ryu = new Ryu();
+    ryu.Init();
     sprite2 = new AnimatedSprite(895, 230, 8, atlas, "kenstand");
     keyInput.addKeycodeCallback(37, walkLeftKen);
     keyInput.addKeycodeCallback(39, walkRightKen);
-    keyInput.addKeycodeCallback(65, walkLeft);
-    keyInput.addKeycodeCallback(68, walkRight);
+    keyInput.addKeycodeCallback(65, ryu.WalkLeft);
+    keyInput.addKeycodeCallback(68, ryu.WalkRight);
+    keyInput.addKeycodeCallback(71, ryu.Sweep);
 };
+var Ryu = (function () {
+    function Ryu() {
+        var _this = this;
+        this.pos = 0;
+        this.hitboxWidth = 0;
+        this.hitboxPos = 0;
+        this.isSweeping = false;
+        this.isBlocking = false;
+        this.isDead = false;
+        this.Init = function () {
+            _this.Reset();
+            _this.idleSprite = new AnimatedSprite(_this.pos, 230, 8, atlas, "ryustand");
+            _this.sweepingSprite = new AnimatedSprite(_this.pos, _this.pos, 13, atlas, "ryusweep");
+        };
+        this.Reset = function () {
+            _this.pos = 315;
+            _this.hitboxWidth = 20;
+            _this.hitboxPos = _this.pos + _this.hitboxWidth;
+            _this.isSweeping = false;
+            _this.isBlocking = false;
+            _this.isDead = false;
+        };
+        this.Draw = function () {
+            if (_this.isSweeping) {
+                _this.sweepingSprite.draw();
+            }
+            else if (_this.isBlocking) {
+            }
+            else if (_this.isDead) {
+            }
+            else {
+                _this.idleSprite.draw();
+            }
+        };
+        this.Update = function () {
+            _this.UpdateHitbox();
+            _this.UpdateSprites();
+        };
+        this.WalkLeft = function () {
+            _this.pos -= 2;
+        };
+        this.WalkRight = function () {
+            _this.pos += 2;
+        };
+        this.UpdateSprites = function () {
+            _this.idleSprite.x = _this.pos;
+            _this.sweepingSprite.x = _this.pos;
+        };
+        this.UpdateHitbox = function () {
+            if (_this.isSweeping) {
+                _this.hitboxWidth = 120;
+            }
+            else {
+                _this.hitboxWidth = 20;
+            }
+            _this.hitboxPos = _this.pos + _this.hitboxWidth;
+        };
+        this.Sweep = function () {
+            _this.isSweeping = true;
+        };
+        this.Block = function () {
+            _this.isBlocking = true;
+        };
+        this.Die = function () {
+            _this.isDead = true;
+        };
+    }
+    return Ryu;
+}());
 var TextureAtlas = (function () {
     function TextureAtlas(atlasName, loadCallback) {
         var _this = this;
