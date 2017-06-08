@@ -40,6 +40,7 @@ class AnimatedSprite {
             frame.ox, frame.oy,
             frame.w, frame.h);
         ctx.restore();
+        
     }
 
     public getFrameString = (): string => {

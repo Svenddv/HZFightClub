@@ -17,31 +17,33 @@ function gameLoop(): void {
     ken.Update();
     ryu.Draw();
     ken.Draw();
+    Collision();
     
 }
 
 
 
-// function Collision(): void {
-// ryuDead: boolean = false;
-// kenDead: boolean = false;
+function Collision(): void {
+ryu.isDead = false;
+ken.isDead = false;
 
-// if (this.ryu.hitboxPos - ken.hitboxPos >= 0) {  //means the hitboxes are on the wrong side of one another: they are colliding
-//     if (this.ryu.isSweeping){
-//         if(!this.ken.isBlocking){
-//             this.ken.Die();
-//         }
-//     }
-//     if (this.ken.isSweeping){
-//         if(!this.ryu.isBlocking){
-//             this.ryu.Die();
-//         }
-//     }
-//     if(this.ryu.isDead || this.ken.isDead){
-//         this.ken.Reset();
-//         this.ryu.Reset();
-//         return;
-//     }
+if (this.ryu.hitboxPos - ken.hitboxPos >= 0) {  //means the hitboxes are on the wrong side of one another: they are colliding
+    if (this.ryu.isSweeping && !this.ken.isBlocking){
+        if(!this.ken.isBlocking){
+            this.ken.Die();
+            }
+        }
+    if (this.ken.isSweeping && !this.ryu.isBlocking){
+            this.ryu.Die();
+            }
+        }
+    if(this.ryu.isDead || this.ken.isDead){
+        this.ken.Reset();
+        this.ryu.Reset();
+        }
+    }
+
+
 
 window.onload = () => {
     canvas = <HTMLCanvasElement>document.getElementById('cnvs');

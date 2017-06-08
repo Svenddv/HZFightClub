@@ -71,7 +71,7 @@ public UpdateSprites = (): void => {
 
     public UpdateHitbox = (): void => {
         if(this.isSweeping){
-            this.hitboxWidth = 120;
+            this.hitboxWidth = 0;
         }
         else{
             this.hitboxWidth = 20;

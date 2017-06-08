@@ -113,7 +113,7 @@ var Ken = (function () {
         };
         this.UpdateHitbox = function () {
             if (_this.isSweeping) {
-                _this.hitboxWidth = 120;
+                _this.hitboxWidth = 0;
             }
             else {
                 _this.hitboxWidth = 20;
@@ -184,6 +184,25 @@ function gameLoop() {
     ken.Update();
     ryu.Draw();
     ken.Draw();
+    Collision();
+}
+function Collision() {
+    ryu.isDead = false;
+    ken.isDead = false;
+    if (this.ryu.hitboxPos - ken.hitboxPos >= 0) {
+        if (this.ryu.isSweeping && !this.ken.isBlocking) {
+            if (!this.ken.isBlocking) {
+                this.ken.Die();
+            }
+        }
+        if (this.ken.isSweeping && !this.ryu.isBlocking) {
+            this.ryu.Die();
+        }
+    }
+    if (this.ryu.isDead || this.ken.isDead) {
+        this.ken.Reset();
+        this.ryu.Reset();
+    }
 }
 window.onload = function () {
     canvas = document.getElementById('cnvs');
@@ -258,7 +277,7 @@ var Ryu = (function () {
         };
         this.UpdateHitbox = function () {
             if (_this.isSweeping) {
-                _this.hitboxWidth = 120;
+                _this.hitboxWidth = 59;
             }
             else {
                 _this.hitboxWidth = 20;
