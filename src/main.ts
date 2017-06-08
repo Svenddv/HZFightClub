@@ -8,6 +8,8 @@ var atlas: TextureAtlas;
 var ryu: Ryu;
 var ken: Ken;
 var sprite2: AnimatedSprite;
+var audio = new Audio();
+audio.src = "./assets/music/bgm.mp3"
 
 function gameLoop(): void {
     requestAnimationFrame(gameLoop);
@@ -43,6 +45,17 @@ if (this.ryu.hitboxPos - ken.hitboxPos >= 0) {  //means the hitboxes are on the 
         }
     }
 
+function WalkRight(): void{
+    if (this.ryu.pos + 61 <= this.ken.pos){
+        this.ryu.WalkRight();
+    }
+}
+
+function WalkLeft(): void{
+    if (this.ken.pos -2 >= this.ryu.pos + 59){
+        this.ken.WalkLeft();
+    }
+}
 
 
 window.onload = () => {
@@ -54,10 +67,12 @@ window.onload = () => {
     ken = new Ken();
     ryu.Init();
     ken.Init();
+    audio.load();
+    audio.play();
     
    
     // PRESS LEFT ARROW KEY
-    keyInput.addKeycodeCallback(37, ken.WalkLeft);
+    keyInput.addKeycodeCallback(37, this.WalkLeft);
    
     // PRESS RIGHT ARROW KEY
     keyInput.addKeycodeCallback(39, ken.WalkRight);
@@ -69,7 +84,7 @@ window.onload = () => {
     keyInput.addKeycodeCallback(65, ryu.WalkLeft);
    
     // PRESS 'D' KEY
-    keyInput.addKeycodeCallback(68, ryu.WalkRight);
+    keyInput.addKeycodeCallback(68, this.WalkRight);
 
     // PRESS 'G' KEY
     keyInput.addKeycodeCallback(71, ryu.Sweep);

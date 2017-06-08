@@ -99,7 +99,9 @@ var Ken = (function () {
             _this.pos -= 2;
         };
         this.WalkRight = function () {
-            _this.pos += 2;
+            if (ken.pos + 2 <= 910) {
+                _this.pos += 2;
+            }
         };
         this.CheckAnimation = function () {
             if (_this.sweepingSprite.isCompleted) {
@@ -109,14 +111,14 @@ var Ken = (function () {
         };
         this.UpdateSprites = function () {
             _this.idleSprite.x = _this.pos;
-            _this.sweepingSprite.x = _this.pos;
+            _this.sweepingSprite.x = _this.pos - 15;
         };
         this.UpdateHitbox = function () {
             if (_this.isSweeping) {
-                _this.hitboxWidth = 0;
+                _this.hitboxWidth = 29;
             }
             else {
-                _this.hitboxWidth = 20;
+                _this.hitboxWidth = 0;
             }
             _this.hitboxPos = _this.pos - _this.hitboxWidth;
         };
@@ -166,6 +168,7 @@ var KeyboardInput = (function () {
     }
     return KeyboardInput;
 }());
+var _this = this;
 var canvas;
 var ctx;
 var background = new Image();
@@ -176,6 +179,8 @@ var atlas;
 var ryu;
 var ken;
 var sprite2;
+var audio = new Audio();
+audio.src = "./assets/music/bgm.mp3";
 function gameLoop() {
     requestAnimationFrame(gameLoop);
     keyInput.inputLoop();
@@ -204,6 +209,16 @@ function Collision() {
         this.ryu.Reset();
     }
 }
+function WalkRight() {
+    if (this.ryu.pos + 61 <= this.ken.pos) {
+        this.ryu.WalkRight();
+    }
+}
+function WalkLeft() {
+    if (this.ken.pos - 2 >= this.ryu.pos + 59) {
+        this.ken.WalkLeft();
+    }
+}
 window.onload = function () {
     canvas = document.getElementById('cnvs');
     ctx = canvas.getContext("2d");
@@ -213,11 +228,13 @@ window.onload = function () {
     ken = new Ken();
     ryu.Init();
     ken.Init();
-    keyInput.addKeycodeCallback(37, ken.WalkLeft);
+    audio.load();
+    audio.play();
+    keyInput.addKeycodeCallback(37, _this.WalkLeft);
     keyInput.addKeycodeCallback(39, ken.WalkRight);
     keyInput.addKeycodeCallback(96, ken.Sweep);
     keyInput.addKeycodeCallback(65, ryu.WalkLeft);
-    keyInput.addKeycodeCallback(68, ryu.WalkRight);
+    keyInput.addKeycodeCallback(68, _this.WalkRight);
     keyInput.addKeycodeCallback(71, ryu.Sweep);
 };
 var Ryu = (function () {
@@ -260,7 +277,9 @@ var Ryu = (function () {
             _this.CheckAnimation();
         };
         this.WalkLeft = function () {
-            _this.pos -= 2;
+            if (_this.pos - 2 >= 300) {
+                _this.pos -= 2;
+            }
         };
         this.WalkRight = function () {
             _this.pos += 2;
@@ -277,10 +296,10 @@ var Ryu = (function () {
         };
         this.UpdateHitbox = function () {
             if (_this.isSweeping) {
-                _this.hitboxWidth = 59;
+                _this.hitboxWidth = 90;
             }
             else {
-                _this.hitboxWidth = 20;
+                _this.hitboxWidth = 59;
             }
             _this.hitboxPos = _this.pos + _this.hitboxWidth;
         };

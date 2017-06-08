@@ -52,7 +52,9 @@ public Update = (): void => {
     }
 
     public WalkRight = (): void => {
+       if (ken.pos +2 <= 910) {
         this.pos += 2;
+       }
     }
 
     public CheckAnimation = (): void => {
@@ -64,17 +66,17 @@ public Update = (): void => {
     }
 public UpdateSprites = (): void => {
         this.idleSprite.x = this.pos;
-        this.sweepingSprite.x = this.pos;
+        this.sweepingSprite.x = this.pos - 15;
       //  this.blockingSprite.x = this.pos;
        // this.deathSprite.x = this.pos;
     }
 
     public UpdateHitbox = (): void => {
         if(this.isSweeping){
-            this.hitboxWidth = 0;
+            this.hitboxWidth = 29;
         }
         else{
-            this.hitboxWidth = 20;
+            this.hitboxWidth = 0;
         }
         this.hitboxPos = this.pos - this.hitboxWidth;
     }

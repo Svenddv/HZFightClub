@@ -49,11 +49,13 @@ class Ryu{
     }
 
     public WalkLeft = (): void => {
-        this.pos -= 2;
+        if (this.pos -2 >= 300) {
+            this.pos -= 2;}
     }
 
     public WalkRight = (): void => {
-        this.pos += 2;
+                 this.pos += 2;
+        
     }
     
     public CheckAnimation = (): void => {
@@ -72,10 +74,10 @@ public UpdateSprites = (): void => {
 
     public UpdateHitbox = (): void => {
         if(this.isSweeping){
-            this.hitboxWidth = 59;
+            this.hitboxWidth = 90;
         }
         else{
-            this.hitboxWidth = 20;
+            this.hitboxWidth = 59;
         }
         this.hitboxPos = this.pos + this.hitboxWidth;
     }
