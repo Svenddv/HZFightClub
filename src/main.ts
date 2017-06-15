@@ -27,7 +27,7 @@ function collision(): void {
 ryu.isDead = false;
 ken.isDead = false;
 
-if (this.ryu.hitboxPos - ken.hitboxPos >= 0) {  //means the hitboxes are on the wrong side of one another: they are colliding
+if (this.ryu.hitboxPos - ken.hitboxPos >= 0) {  // means the hitboxes are on the wrong side of one another: they are colliding
     if (this.ryu.isSweeping && !this.ken.isBlocking){
         if(!this.ken.isBlocking){
             this.ken.die();

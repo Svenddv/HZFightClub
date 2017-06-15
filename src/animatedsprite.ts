@@ -21,7 +21,7 @@ class AnimatedSprite {
             this.currentFrame = 0;
             this.isCompleted = true;
         }
-        //todo a way to slow down the animation but it starts flickering
+        //todo a way to slow down the animation at the moment; though it starts flickering
         // if (this.delayFrame <= 1) {
         //     this.delayFrame++;            
         //     }
