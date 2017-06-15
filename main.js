@@ -1,3 +1,13 @@
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var AnimatedSprite = (function () {
     function AnimatedSprite(x, y, frame_count, atlas, sequence_name) {
         var _this = this;
@@ -34,6 +44,61 @@ var AnimatedSprite = (function () {
     }
     return AnimatedSprite;
 }());
+var Fighter = (function () {
+    function Fighter() {
+        var _this = this;
+        this.pos = 0;
+        this.idleWidth = 0;
+        this.hitboxPos = 0;
+        this.sweepingWidth = 0;
+        this.sweepCorrection = 0;
+        this.isSweeping = false;
+        this.isBlocking = false;
+        this.isDead = false;
+        this.draw = function () {
+            if (_this.isSweeping) {
+                _this.sweepingSprite.draw();
+            }
+            else if (_this.isBlocking) {
+            }
+            else if (_this.isDead) {
+            }
+            else {
+                _this.idleSprite.draw();
+            }
+        };
+        this.update = function () {
+            _this.updateHitbox();
+            _this.updateSprites();
+            _this.checkAnimation();
+        };
+        this.checkAnimation = function () {
+            if (_this.sweepingSprite.isCompleted) {
+                _this.isSweeping = false;
+                _this.sweepingSprite.isCompleted = false;
+            }
+        };
+        this.updateSprites = function () {
+            _this.idleSprite.x = _this.pos;
+            _this.sweepingSprite.x = _this.pos - _this.sweepCorrection;
+        };
+        this.updateHitbox = function () {
+            if (_this.isSweeping) {
+                _this.hitboxPos = _this.pos + _this.sweepingWidth;
+            }
+            else {
+                _this.hitboxPos = _this.pos + _this.idleWidth;
+            }
+        };
+        this.sweep = function () {
+            _this.isSweeping = true;
+        };
+        this.die = function () {
+            _this.isDead = true;
+        };
+    }
+    return Fighter;
+}());
 var Frame = (function () {
     function Frame(x, y, w, h, ox, oy) {
         if (x === void 0) { x = 0; }
@@ -55,83 +120,39 @@ var Frame = (function () {
     };
     return Frame;
 }());
-var Ken = (function () {
+var Ken = (function (_super) {
+    __extends(Ken, _super);
     function Ken() {
-        var _this = this;
-        this.pos = 0;
-        this.hitboxWidth = 0;
-        this.hitboxPos = 0;
-        this.isSweeping = false;
-        this.isBlocking = false;
-        this.isDead = false;
-        this.init = function () {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.init = function () {
             _this.reset();
             _this.idleSprite = new AnimatedSprite(_this.pos, 230, 17, atlas, "kenstand");
             _this.sweepingSprite = new AnimatedSprite(_this.pos, 242, 27, atlas, "kensweep");
+            _this.idleWidth = 0;
+            _this.sweepingWidth = -29;
+            _this.sweepCorrection = -15;
         };
-        this.reset = function () {
-            _this.pos = 895;
-            _this.hitboxWidth = 20;
-            _this.hitboxPos = _this.pos - _this.hitboxWidth;
+        _this.reset = function () {
+            _this.pos = 880;
+            _this.hitboxPos = _this.pos;
             _this.isSweeping = false;
             _this.isBlocking = false;
             _this.isDead = false;
         };
-        this.draw = function () {
-            if (_this.isSweeping) {
-                _this.sweepingSprite.draw();
-            }
-            else if (_this.isBlocking) {
-            }
-            else if (_this.isDead) {
-            }
-            else {
-                _this.idleSprite.draw();
-            }
-        };
-        this.update = function () {
-            _this.updateHitbox();
-            _this.updateSprites();
-            _this.checkAnimation();
-        };
-        this.walkLeft = function () {
-            if (ken.pos - 2 >= ryu.pos + 59) {
+        _this.walkLeft = function () {
+            if (_this.pos - 2 >= ryu.pos + ryu.idleWidth && !_this.isSweeping) {
                 _this.pos -= 2;
             }
         };
-        this.walkRight = function () {
-            if (ken.pos + 2 <= 910) {
+        _this.walkRight = function () {
+            if (_this.pos + 2 <= 900 && !_this.isSweeping) {
                 _this.pos += 2;
             }
         };
-        this.checkAnimation = function () {
-            if (_this.sweepingSprite.isCompleted) {
-                _this.isSweeping = false;
-                _this.sweepingSprite.isCompleted = false;
-            }
-        };
-        this.updateSprites = function () {
-            _this.idleSprite.x = _this.pos;
-            _this.sweepingSprite.x = _this.pos - 15;
-        };
-        this.updateHitbox = function () {
-            if (_this.isSweeping) {
-                _this.hitboxWidth = 29;
-            }
-            else {
-                _this.hitboxWidth = 0;
-            }
-            _this.hitboxPos = _this.pos - _this.hitboxWidth;
-        };
-        this.sweep = function () {
-            _this.isSweeping = true;
-        };
-        this.die = function () {
-            _this.isDead = true;
-        };
+        return _this;
     }
     return Ken;
-}());
+}(Fighter));
 var KeyboardInput = (function () {
     function KeyboardInput() {
         var _this = this;
@@ -170,7 +191,6 @@ var canvas;
 var ctx;
 var background = new Image();
 background.src = "./assets/images/background.gif";
-var img = new Image();
 var keyInput;
 var atlas;
 var ryu;
@@ -223,83 +243,38 @@ window.onload = function () {
     keyInput.addKeycodeCallback(68, ryu.walkRight);
     keyInput.addKeycodeCallback(71, ryu.sweep);
 };
-var Ryu = (function () {
+var Ryu = (function (_super) {
+    __extends(Ryu, _super);
     function Ryu() {
-        var _this = this;
-        this.pos = 0;
-        this.hitboxWidth = 0;
-        this.hitboxPos = 0;
-        this.isSweeping = false;
-        this.isBlocking = false;
-        this.isDead = false;
-        this.init = function () {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.init = function () {
             _this.reset();
             _this.idleSprite = new AnimatedSprite(_this.pos, 230, 17, atlas, "ryustand");
             _this.sweepingSprite = new AnimatedSprite(_this.pos, 242, 27, atlas, "ryusweep");
+            _this.idleWidth = 59;
+            _this.sweepingWidth = 90;
         };
-        this.reset = function () {
-            _this.pos = 315;
-            _this.hitboxWidth = 20;
-            _this.hitboxPos = _this.pos + _this.hitboxWidth;
+        _this.reset = function () {
+            _this.pos = 330;
+            _this.hitboxPos = _this.pos;
             _this.isSweeping = false;
             _this.isBlocking = false;
             _this.isDead = false;
         };
-        this.draw = function () {
-            if (_this.isSweeping) {
-                _this.sweepingSprite.draw();
-            }
-            else if (_this.isBlocking) {
-            }
-            else if (_this.isDead) {
-            }
-            else {
-                _this.idleSprite.draw();
-            }
-        };
-        this.update = function () {
-            _this.updateHitbox();
-            _this.updateSprites();
-            _this.checkAnimation();
-        };
-        this.walkLeft = function () {
-            if (_this.pos - 2 >= 300) {
+        _this.walkLeft = function () {
+            if (_this.pos - 2 >= 300 && !_this.isSweeping) {
                 _this.pos -= 2;
             }
         };
-        this.walkRight = function () {
-            if (_this.pos + 61 <= ken.pos) {
+        _this.walkRight = function () {
+            if (_this.pos + _this.idleWidth <= ken.pos && !_this.isSweeping) {
                 _this.pos += 2;
             }
         };
-        this.checkAnimation = function () {
-            if (_this.sweepingSprite.isCompleted) {
-                _this.isSweeping = false;
-                _this.sweepingSprite.isCompleted = false;
-            }
-        };
-        this.updateSprites = function () {
-            _this.idleSprite.x = _this.pos;
-            _this.sweepingSprite.x = _this.pos;
-        };
-        this.updateHitbox = function () {
-            if (_this.isSweeping) {
-                _this.hitboxWidth = 90;
-            }
-            else {
-                _this.hitboxWidth = 59;
-            }
-            _this.hitboxPos = _this.pos + _this.hitboxWidth;
-        };
-        this.sweep = function () {
-            _this.isSweeping = true;
-        };
-        this.die = function () {
-            _this.isDead = true;
-        };
+        return _this;
     }
     return Ryu;
-}());
+}(Fighter));
 var TextureAtlas = (function () {
     function TextureAtlas(atlasName, loadCallback) {
         var _this = this;
