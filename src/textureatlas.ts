@@ -41,7 +41,6 @@ class TextureAtlas {
         var temp_frame: Frame;
 
         for (var frame_name in data.frames) {
-            // console.log("Frame name: " + frame_name);
             var sprite_data: any = data.frames[frame_name];
 
             temp_frame = new Frame(sprite_data.frame.x,
@@ -62,7 +61,6 @@ class TextureAtlas {
     }
 
     private onImageLoad = () => {
-        // console.log("onImageLoad");
         this.taLoadComplete = true;
         this._loadCallback();
     }
