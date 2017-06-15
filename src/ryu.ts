@@ -10,15 +10,15 @@ class Ryu{
     blockingSprite: AnimatedSprite;
     deathSprite: AnimatedSprite;
 
-    public Init = (): void => {
-        this.Reset();
+    public init = (): void => {
+        this.reset();
         this.idleSprite = new AnimatedSprite(this.pos, 230, 17, atlas, "ryustand");
         this.sweepingSprite = new AnimatedSprite(this.pos, 242, 27, atlas, "ryusweep");
         //todo this.blockingSprite = new AnimatedSprite(
         //todo this.deadSprite = new AnimatedSprite(
     }
 
-    public Reset = (): void => {
+    public reset = (): void => {
         this.pos = 315;
         this.hitboxWidth = 20;
         this.hitboxPos = this.pos + this.hitboxWidth;
@@ -42,37 +42,40 @@ class Ryu{
         }
     }
 
-    public Update = (): void => {
-        this.UpdateHitbox();
-        this.UpdateSprites();
-        this.CheckAnimation();
+    public update = (): void => {
+        this.updateHitbox();
+        this.updateSprites();
+        this.checkAnimation();
     }
 
-    public WalkLeft = (): void => {
+    public walkLeft = (): void => {
         if (this.pos -2 >= 300) {
             this.pos -= 2;}
     }
 
-    public WalkRight = (): void => {
-                 this.pos += 2;
+    public walkRight = (): void => {
+                if (this.pos +61 <= ken.pos) {
+                    this.pos += 2;
+                }
         
     }
     
-    public CheckAnimation = (): void => {
+    public checkAnimation = (): void => {
         if (this.sweepingSprite.isCompleted){
        this.isSweeping = false;
        this.sweepingSprite.isCompleted = false;
         }
     
     }
-public UpdateSprites = (): void => {
+
+    public updateSprites = (): void => {
         this.idleSprite.x = this.pos;
         this.sweepingSprite.x = this.pos;
       //todo this.blockingSprite.x = this.pos;
        //todo this.deathSprite.x = this.pos;
     }
 
-    public UpdateHitbox = (): void => {
+    public updateHitbox = (): void => {
         if(this.isSweeping){
             this.hitboxWidth = 90;
         }
@@ -82,15 +85,15 @@ public UpdateSprites = (): void => {
         this.hitboxPos = this.pos + this.hitboxWidth;
     }
 
-    public Sweep = (): void => {
+    public sweep = (): void => {
         this.isSweeping = true;
     }
 
-    public Block = (): void => {
-        this.isBlocking = true;
-    }
+    // public Block = (): void => {
+    //     this.isBlocking = true;
+    // }
 
-    public Die = (): void => {
+    public die = (): void => {
         this.isDead = true;
     }
 }

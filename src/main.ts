@@ -15,8 +15,8 @@ function gameLoop(): void {
     requestAnimationFrame(gameLoop);
     keyInput.inputLoop();
     ctx.drawImage(background,250,100);
-    ryu.Update();
-    ken.Update();
+    ryu.update();
+    ken.update();
     ryu.draw();
     ken.draw();
     collision();
@@ -30,31 +30,18 @@ ken.isDead = false;
 if (this.ryu.hitboxPos - ken.hitboxPos >= 0) {  //means the hitboxes are on the wrong side of one another: they are colliding
     if (this.ryu.isSweeping && !this.ken.isBlocking){
         if(!this.ken.isBlocking){
-            this.ken.Die();
+            this.ken.die();
             }
         }
     if (this.ken.isSweeping && !this.ryu.isBlocking){
-            this.ryu.Die();
+            this.ryu.die();
             }
         }
     if(this.ryu.isDead || this.ken.isDead){
-        this.ken.Reset();
-        this.ryu.Reset();
+        this.ken.reset();
+        this.ryu.reset();
         }
     }
-
-function WalkRight(): void{
-    if (this.ryu.pos + 61 <= this.ken.pos){
-        this.ryu.WalkRight();
-    }
-}
-
-function WalkLeft(): void{
-    if (this.ken.pos -2 >= this.ryu.pos + 59){
-        this.ken.WalkLeft();
-    }
-}
-
 
 window.onload = () => {
     canvas = <HTMLCanvasElement>document.getElementById('cnvs');
@@ -63,28 +50,28 @@ window.onload = () => {
     atlas = new TextureAtlas("images/atlas.png", gameLoop);
     ryu = new Ryu();
     ken = new Ken();
-    ryu.Init();
-    ken.Init();
+    ryu.init();
+    ken.init();
     audio.load();
     audio.play();
     
    
     // PRESS LEFT ARROW KEY
-    keyInput.addKeycodeCallback(37, this.WalkLeft);
+    keyInput.addKeycodeCallback(37, ken.walkLeft);
    
     // PRESS RIGHT ARROW KEY
-    keyInput.addKeycodeCallback(39, ken.WalkRight);
+    keyInput.addKeycodeCallback(39, ken.walkRight);
 
     // PRESS NUMPAD 0 KEY
-    keyInput.addKeycodeCallback(96, ken.Sweep);
+    keyInput.addKeycodeCallback(96, ken.sweep);
     
     // PRESS 'A' KEY
-    keyInput.addKeycodeCallback(65, ryu.WalkLeft);
+    keyInput.addKeycodeCallback(65, ryu.walkLeft);
    
     // PRESS 'D' KEY
-    keyInput.addKeycodeCallback(68, this.WalkRight);
+    keyInput.addKeycodeCallback(68, ryu.walkRight);
 
     // PRESS 'G' KEY
-    keyInput.addKeycodeCallback(71, ryu.Sweep);
+    keyInput.addKeycodeCallback(71, ryu.sweep);
     
 };

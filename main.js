@@ -6,7 +6,6 @@ var AnimatedSprite = (function () {
         this.frameCount = 0;
         this.sequenceName = "";
         this.isCompleted = false;
-        this.delayFrame = 0;
         this.currentFrame = 0;
         this.draw = function () {
             if (_this.currentFrame > _this.frameCount) {
@@ -65,12 +64,12 @@ var Ken = (function () {
         this.isSweeping = false;
         this.isBlocking = false;
         this.isDead = false;
-        this.Init = function () {
-            _this.Reset();
+        this.init = function () {
+            _this.reset();
             _this.idleSprite = new AnimatedSprite(_this.pos, 230, 17, atlas, "kenstand");
             _this.sweepingSprite = new AnimatedSprite(_this.pos, 242, 27, atlas, "kensweep");
         };
-        this.Reset = function () {
+        this.reset = function () {
             _this.pos = 895;
             _this.hitboxWidth = 20;
             _this.hitboxPos = _this.pos - _this.hitboxWidth;
@@ -90,30 +89,32 @@ var Ken = (function () {
                 _this.idleSprite.draw();
             }
         };
-        this.Update = function () {
-            _this.UpdateHitbox();
-            _this.UpdateSprites();
-            _this.CheckAnimation();
+        this.update = function () {
+            _this.updateHitbox();
+            _this.updateSprites();
+            _this.checkAnimation();
         };
-        this.WalkLeft = function () {
-            _this.pos -= 2;
+        this.walkLeft = function () {
+            if (ken.pos - 2 >= ryu.pos + 59) {
+                _this.pos -= 2;
+            }
         };
-        this.WalkRight = function () {
+        this.walkRight = function () {
             if (ken.pos + 2 <= 910) {
                 _this.pos += 2;
             }
         };
-        this.CheckAnimation = function () {
+        this.checkAnimation = function () {
             if (_this.sweepingSprite.isCompleted) {
                 _this.isSweeping = false;
                 _this.sweepingSprite.isCompleted = false;
             }
         };
-        this.UpdateSprites = function () {
+        this.updateSprites = function () {
             _this.idleSprite.x = _this.pos;
             _this.sweepingSprite.x = _this.pos - 15;
         };
-        this.UpdateHitbox = function () {
+        this.updateHitbox = function () {
             if (_this.isSweeping) {
                 _this.hitboxWidth = 29;
             }
@@ -122,13 +123,10 @@ var Ken = (function () {
             }
             _this.hitboxPos = _this.pos - _this.hitboxWidth;
         };
-        this.Sweep = function () {
+        this.sweep = function () {
             _this.isSweeping = true;
         };
-        this.Block = function () {
-            _this.isBlocking = true;
-        };
-        this.Die = function () {
+        this.die = function () {
             _this.isDead = true;
         };
     }
@@ -168,7 +166,6 @@ var KeyboardInput = (function () {
     }
     return KeyboardInput;
 }());
-var _this = this;
 var canvas;
 var ctx;
 var background = new Image();
@@ -185,8 +182,8 @@ function gameLoop() {
     requestAnimationFrame(gameLoop);
     keyInput.inputLoop();
     ctx.drawImage(background, 250, 100);
-    ryu.Update();
-    ken.Update();
+    ryu.update();
+    ken.update();
     ryu.draw();
     ken.draw();
     collision();
@@ -197,26 +194,16 @@ function collision() {
     if (this.ryu.hitboxPos - ken.hitboxPos >= 0) {
         if (this.ryu.isSweeping && !this.ken.isBlocking) {
             if (!this.ken.isBlocking) {
-                this.ken.Die();
+                this.ken.die();
             }
         }
         if (this.ken.isSweeping && !this.ryu.isBlocking) {
-            this.ryu.Die();
+            this.ryu.die();
         }
     }
     if (this.ryu.isDead || this.ken.isDead) {
-        this.ken.Reset();
-        this.ryu.Reset();
-    }
-}
-function WalkRight() {
-    if (this.ryu.pos + 61 <= this.ken.pos) {
-        this.ryu.WalkRight();
-    }
-}
-function WalkLeft() {
-    if (this.ken.pos - 2 >= this.ryu.pos + 59) {
-        this.ken.WalkLeft();
+        this.ken.reset();
+        this.ryu.reset();
     }
 }
 window.onload = function () {
@@ -226,16 +213,16 @@ window.onload = function () {
     atlas = new TextureAtlas("images/atlas.png", gameLoop);
     ryu = new Ryu();
     ken = new Ken();
-    ryu.Init();
-    ken.Init();
+    ryu.init();
+    ken.init();
     audio.load();
     audio.play();
-    keyInput.addKeycodeCallback(37, _this.WalkLeft);
-    keyInput.addKeycodeCallback(39, ken.WalkRight);
-    keyInput.addKeycodeCallback(96, ken.Sweep);
-    keyInput.addKeycodeCallback(65, ryu.WalkLeft);
-    keyInput.addKeycodeCallback(68, _this.WalkRight);
-    keyInput.addKeycodeCallback(71, ryu.Sweep);
+    keyInput.addKeycodeCallback(37, ken.walkLeft);
+    keyInput.addKeycodeCallback(39, ken.walkRight);
+    keyInput.addKeycodeCallback(96, ken.sweep);
+    keyInput.addKeycodeCallback(65, ryu.walkLeft);
+    keyInput.addKeycodeCallback(68, ryu.walkRight);
+    keyInput.addKeycodeCallback(71, ryu.sweep);
 };
 var Ryu = (function () {
     function Ryu() {
@@ -246,12 +233,12 @@ var Ryu = (function () {
         this.isSweeping = false;
         this.isBlocking = false;
         this.isDead = false;
-        this.Init = function () {
-            _this.Reset();
+        this.init = function () {
+            _this.reset();
             _this.idleSprite = new AnimatedSprite(_this.pos, 230, 17, atlas, "ryustand");
             _this.sweepingSprite = new AnimatedSprite(_this.pos, 242, 27, atlas, "ryusweep");
         };
-        this.Reset = function () {
+        this.reset = function () {
             _this.pos = 315;
             _this.hitboxWidth = 20;
             _this.hitboxPos = _this.pos + _this.hitboxWidth;
@@ -271,30 +258,32 @@ var Ryu = (function () {
                 _this.idleSprite.draw();
             }
         };
-        this.Update = function () {
-            _this.UpdateHitbox();
-            _this.UpdateSprites();
-            _this.CheckAnimation();
+        this.update = function () {
+            _this.updateHitbox();
+            _this.updateSprites();
+            _this.checkAnimation();
         };
-        this.WalkLeft = function () {
+        this.walkLeft = function () {
             if (_this.pos - 2 >= 300) {
                 _this.pos -= 2;
             }
         };
-        this.WalkRight = function () {
-            _this.pos += 2;
+        this.walkRight = function () {
+            if (_this.pos + 61 <= ken.pos) {
+                _this.pos += 2;
+            }
         };
-        this.CheckAnimation = function () {
+        this.checkAnimation = function () {
             if (_this.sweepingSprite.isCompleted) {
                 _this.isSweeping = false;
                 _this.sweepingSprite.isCompleted = false;
             }
         };
-        this.UpdateSprites = function () {
+        this.updateSprites = function () {
             _this.idleSprite.x = _this.pos;
             _this.sweepingSprite.x = _this.pos;
         };
-        this.UpdateHitbox = function () {
+        this.updateHitbox = function () {
             if (_this.isSweeping) {
                 _this.hitboxWidth = 90;
             }
@@ -303,13 +292,10 @@ var Ryu = (function () {
             }
             _this.hitboxPos = _this.pos + _this.hitboxWidth;
         };
-        this.Sweep = function () {
+        this.sweep = function () {
             _this.isSweeping = true;
         };
-        this.Block = function () {
-            _this.isBlocking = true;
-        };
-        this.Die = function () {
+        this.die = function () {
             _this.isDead = true;
         };
     }

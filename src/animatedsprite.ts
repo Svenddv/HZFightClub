@@ -5,8 +5,7 @@ class AnimatedSprite {
     public atlas: TextureAtlas;
     public sequenceName: string = "";
     public isCompleted: boolean = false;
-    
-    public delayFrame = 0;
+    //todo public delayFrame = 0;
     public currentFrame = 0;
 
     constructor(x: number, y: number, frame_count: number, atlas: TextureAtlas, sequence_name: string) {
@@ -22,6 +21,7 @@ class AnimatedSprite {
             this.currentFrame = 0;
             this.isCompleted = true;
         }
+        //todo a way to slow down the animation but it starts flickering
         // if (this.delayFrame <= 1) {
         //     this.delayFrame++;            
         //     }
