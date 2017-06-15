@@ -7,7 +7,6 @@ var keyInput: KeyboardInput;
 var atlas: TextureAtlas;
 var ryu: Ryu;
 var ken: Ken;
-var sprite2: AnimatedSprite;
 var audio = new Audio();
 audio.src = "./assets/music/bgm.mp3"
 
@@ -42,6 +41,7 @@ if (this.ryu.hitboxPos - ken.hitboxPos >= 0) {  // means the hitboxes are on the
         this.ryu.reset();
         }
     }
+    
 
 window.onload = () => {
     canvas = <HTMLCanvasElement>document.getElementById('cnvs');

@@ -175,7 +175,6 @@ var keyInput;
 var atlas;
 var ryu;
 var ken;
-var sprite2;
 var audio = new Audio();
 audio.src = "./assets/music/bgm.mp3";
 function gameLoop() {
