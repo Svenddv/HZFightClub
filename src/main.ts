@@ -2,7 +2,6 @@ var canvas: HTMLCanvasElement;
 var ctx: CanvasRenderingContext2D;
 var background = new Image();
 background.src = "./assets/images/background.gif";
-var img: HTMLImageElement = new Image();
 var keyInput: KeyboardInput;
 var atlas: TextureAtlas;
 var ryu: Ryu;
@@ -18,8 +17,7 @@ function gameLoop(): void {
     ken.update();
     ryu.draw();
     ken.draw();
-    collision();
-    
+    collision();    
 }
 
 function collision(): void {
