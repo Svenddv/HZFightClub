@@ -17,15 +17,13 @@ function gameLoop(): void {
     ctx.drawImage(background,250,100);
     ryu.Update();
     ken.Update();
-    ryu.Draw();
-    ken.Draw();
-    Collision();
+    ryu.draw();
+    ken.draw();
+    collision();
     
 }
 
-
-
-function Collision(): void {
+function collision(): void {
 ryu.isDead = false;
 ken.isDead = false;
 

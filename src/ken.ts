@@ -27,7 +27,7 @@ class Ken{
         this.isDead = false;
     }
 
-    public Draw = (): void => {
+    public draw = (): void => {
         if( this.isSweeping){
             this.sweepingSprite.draw();
         }

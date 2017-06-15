@@ -14,8 +14,8 @@ class Ryu{
         this.Reset();
         this.idleSprite = new AnimatedSprite(this.pos, 230, 17, atlas, "ryustand");
         this.sweepingSprite = new AnimatedSprite(this.pos, 242, 27, atlas, "ryusweep");
-        //this.blockingSprite = new AnimatedSprite(
-        //this.deadSprite = new AnimatedSprite(
+        //todo this.blockingSprite = new AnimatedSprite(
+        //todo this.deadSprite = new AnimatedSprite(
     }
 
     public Reset = (): void => {
@@ -27,15 +27,15 @@ class Ryu{
         this.isDead = false;
     }
 
-    public Draw = (): void => {
+    public draw = (): void => {
         if( this.isSweeping){
             this.sweepingSprite.draw();
         }
         else if(this.isBlocking){
-            //this.blockingSprite.draw();
+            //todo this.blockingSprite.draw();
         }
         else if(this.isDead){
-            //this.deathSprite.draw();
+            //todo this.deathSprite.draw();
         }
         else {
             this.idleSprite.draw();
@@ -68,8 +68,8 @@ class Ryu{
 public UpdateSprites = (): void => {
         this.idleSprite.x = this.pos;
         this.sweepingSprite.x = this.pos;
-      //  this.blockingSprite.x = this.pos;
-       // this.deathSprite.x = this.pos;
+      //todo this.blockingSprite.x = this.pos;
+       //todo this.deathSprite.x = this.pos;
     }
 
     public UpdateHitbox = (): void => {

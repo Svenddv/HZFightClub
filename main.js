@@ -78,7 +78,7 @@ var Ken = (function () {
             _this.isBlocking = false;
             _this.isDead = false;
         };
-        this.Draw = function () {
+        this.draw = function () {
             if (_this.isSweeping) {
                 _this.sweepingSprite.draw();
             }
@@ -187,11 +187,11 @@ function gameLoop() {
     ctx.drawImage(background, 250, 100);
     ryu.Update();
     ken.Update();
-    ryu.Draw();
-    ken.Draw();
-    Collision();
+    ryu.draw();
+    ken.draw();
+    collision();
 }
-function Collision() {
+function collision() {
     ryu.isDead = false;
     ken.isDead = false;
     if (this.ryu.hitboxPos - ken.hitboxPos >= 0) {
@@ -259,7 +259,7 @@ var Ryu = (function () {
             _this.isBlocking = false;
             _this.isDead = false;
         };
-        this.Draw = function () {
+        this.draw = function () {
             if (_this.isSweeping) {
                 _this.sweepingSprite.draw();
             }
